@@ -1,18 +1,20 @@
-mongoose-autoincr - autoincrement support for Mongoose
+mongoose-autoincr-base36 - autoincrement base36 support for Mongoose
 ======================================================
 
-This is a plugin for Mongoose to have an extra `autoincr_id` number attribute that autoincrements. This plugin is created to support [Sphinx](http://sphinxsearch.com/).
+This is a plugin for Mongoose to have an extra `url_id` number attribute that autoincrements.
+
+The url_id is to be used for URL shortening, and is a base 36 number (alphanumeric).
 
 This plugin will also create an extra table `counters` or named by you
 to keep track of the counters across all tables.
 
 ### Installation
-    npm install mongoose-autoincr
+    npm install mongoose-autoincr-base36
 
 ### Using the plugin
 First, you have to make sure that you initialize the plugin first.
     var mongoose = require("mongoose");
-      , mongooseIncr = require("mongoose-incr");
+      , mongooseIncr = require("mongoose-autoincr-base36");
 
     var db = mongoose.createConnection("mongodb://localhost/test");
     mongooseIncr.loadAutoIncr(db); // Pass the Mongoose Connection
@@ -34,14 +36,17 @@ store in the field of the counters table. Make sure that it is unique.
 
 ## Tests
 To run tests:
-    ./node_modules/expresso/bin/expresso tests/*.test.js
+    mocha test
 
 ### License
 MIT License
 
 ---
 ### Author
-[Teng Siong Ong](https://github.com/siong1987/)
+[Chris Baik](https://github.com/chrisjbaik)
 
 ### Company
-[FLOChip](http://flochip.com)
+[Seelio](http://seelio.com)
+
+### Forked from 
+[Teng Siong Ong](https://github.com/siong1987/)
