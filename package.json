@@ -1,7 +1,7 @@
 {
   "name": "mongoose-autoincr-base36",
   "description": "base-36 autoincrement support for mongoose node.js orm",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "https://github.com/chrisjbaik/mongoose-autoincr/",
   "author": "Chris Baik <chrisjbaik@gmail.com> (https://github.com/chrisjbaik/)",
   "main": "./index.js",
