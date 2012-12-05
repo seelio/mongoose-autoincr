@@ -18,6 +18,17 @@ exports.loadAutoIncr = (database, options) ->
 
   mongoose.model(counter_name, schema)
 
+base_36 = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+
+toBase36 = (input, output, cb) ->
+  if input > 0
+    remainder = input % 36
+    input = Math.floor(input / 36)
+    output = base_36[remainder] + output
+    toBase36(input, output, cb)
+  else
+    cb(output)
+
 exports.plugin = (schema, options) ->
   # Check for required options
   if (!options.modelName)
@@ -27,11 +38,12 @@ exports.plugin = (schema, options) ->
   Counter = db.model counter_name
 
   schema.add
-    autoincr_id:
-      type: Number
+    url_id:
+      type: String
       unique: true
 
   schema.pre 'save', (next) ->
+    self = this
     Counter.collection.findAndModify
       field: model_name, [], {$inc: {c: 1}}
         new: true
@@ -41,5 +53,7 @@ exports.plugin = (schema, options) ->
         if err
           next(err)
         else
-          this.autoincr_id = count
-          next()
+          toBase36(count, "", (result) ->
+            self.url_id = result
+            next()
+          )
