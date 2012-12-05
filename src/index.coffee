@@ -44,19 +44,17 @@ exports.plugin = (schema, options) ->
 
   schema.pre 'save', (next) ->
     self = this
-    Counter.collection.findAndModify
-      field: model_name, [], {$inc: {c: 1}}
-        new: true
-        upsert: true
-      , (err, doc) =>
-        count = doc.c
-        if err
-          next(err)
-        else
-          if not self.url_id
-            toBase36(count, "", (result) ->
-              self.url_id = result
-              next()
-            )
-          else
+    if not self.url_id
+      Counter.collection.findAndModify
+        field: model_name, [], {$inc: {c: 1}}
+          new: true
+          upsert: true
+        , (err, doc) =>
+          count = doc.c
+          return next(err) if err
+          toBase36(count, "", (result) ->
+            self.url_id = result
             next()
+          )
+    else
+      next()

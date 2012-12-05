@@ -57,31 +57,30 @@
       var self,
         _this = this;
       self = this;
-      return Counter.collection.findAndModify({
-        field: model_name
-      }, [], {
-        $inc: {
-          c: 1
-        }
-      }, {
-        "new": true,
-        upsert: true
-      }, function(err, doc) {
-        var count;
-        count = doc.c;
-        if (err) {
-          return next(err);
-        } else {
-          if (!self.url_id) {
-            return toBase36(count, "", function(result) {
-              self.url_id = result;
-              return next();
-            });
-          } else {
-            return next();
+      if (!self.url_id) {
+        return Counter.collection.findAndModify({
+          field: model_name
+        }, [], {
+          $inc: {
+            c: 1
           }
-        }
-      });
+        }, {
+          "new": true,
+          upsert: true
+        }, function(err, doc) {
+          var count;
+          count = doc.c;
+          if (err) {
+            return next(err);
+          }
+          return toBase36(count, "", function(result) {
+            self.url_id = result;
+            return next();
+          });
+        });
+      } else {
+        return next();
+      }
     });
   };
 

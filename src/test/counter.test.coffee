@@ -64,3 +64,20 @@ describe 'Counter model test', ->
               checkSequence(next)
       checkSequence ->
         User.remove {}, done
+
+  it 'should not resave if url_id already exists', (done) ->
+    Counter.remove {}, (err) ->
+      throw err if err
+      User.remove {}, (err) ->
+        throw err if err
+        user = new User
+          username: 'chris'
+        user.save (err, user) ->
+          expect(user.url_id).to.be('1')
+          user.save (err, user) ->
+            expect(user.url_id).to.be('1')
+            Counter.findOne
+              field: 'user'
+              , (err, doc) ->
+                expect(doc.c).to.be 1
+                done()

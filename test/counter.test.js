@@ -50,7 +50,7 @@
         });
       });
     });
-    return it('test autoincrement', function(done) {
+    it('test autoincrement', function(done) {
       return User.remove({}, function(err) {
         var answers, checkSequence, i, usernames, _i;
         answers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '10', '11'];
@@ -80,6 +80,34 @@
         };
         return checkSequence(function() {
           return User.remove({}, done);
+        });
+      });
+    });
+    return it('should not resave if url_id already exists', function(done) {
+      return Counter.remove({}, function(err) {
+        if (err) {
+          throw err;
+        }
+        return User.remove({}, function(err) {
+          var user;
+          if (err) {
+            throw err;
+          }
+          user = new User({
+            username: 'chris'
+          });
+          return user.save(function(err, user) {
+            expect(user.url_id).to.be('1');
+            return user.save(function(err, user) {
+              expect(user.url_id).to.be('1');
+              return Counter.findOne({
+                field: 'user'
+              }, function(err, doc) {
+                expect(doc.c).to.be(1);
+                return done();
+              });
+            });
+          });
         });
       });
     });
