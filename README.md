@@ -13,6 +13,7 @@ to keep track of the counters across all tables.
 
 ### Using the plugin
 First, you have to make sure that you initialize the plugin first.
+    
     var mongoose = require("mongoose");
       , mongooseIncr = require("mongoose-autoincr-base36");
 
