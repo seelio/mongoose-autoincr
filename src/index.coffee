@@ -53,7 +53,10 @@ exports.plugin = (schema, options) ->
         if err
           next(err)
         else
-          toBase36(count, "", (result) ->
-            self.url_id = result
+          if not self.url_id
+            toBase36(count, "", (result) ->
+              self.url_id = result
+              next()
+            )
+          else
             next()
-          )

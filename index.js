@@ -72,10 +72,14 @@
         if (err) {
           return next(err);
         } else {
-          return toBase36(count, "", function(result) {
-            self.url_id = result;
+          if (!self.url_id) {
+            return toBase36(count, "", function(result) {
+              self.url_id = result;
+              return next();
+            });
+          } else {
             return next();
-          });
+          }
         }
       });
     });
