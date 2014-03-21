@@ -13,7 +13,7 @@
     "lib": "."
   },
   "dependencies": {
-    "mongoose": ">=1.4.0"
+    "mongoose": "3.6.x"
   },
   "devDependencies": {
     "mocha": "1.2.x",
