@@ -8,7 +8,7 @@ exports.loadAutoIncr = (database, options) ->
 
   db = database
 
-  schema = new mongoose.Schema
+  schema = new db.Schema
     field:
       type: String
       unique: true
